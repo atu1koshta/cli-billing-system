@@ -4,7 +4,7 @@ This project is a CLI Billing System built with Python. The application is conta
 
 ## Prerequisites
 
-- Docker installed on your machine
+- Docker installed on your machine. For more information, refer [Install Docker Engine](https://docs.docker.com/engine/install/)
 
 ## Getting Started
 
@@ -39,6 +39,7 @@ Select '2' to view list of stored items.
 ## Usage
 The application provides the following option in command line interface:
 1. **Buy & Checkout**
+   
    Upon selecting this option, user can buy product and checkout. User can buy multiple products at once by providing
     names of products without any space in between. For example, 'ABCD' will buy product 'A', 'B', 'C' and 'D'.
     If unsure about the existing products, user can select '2' to view list of stored items.
@@ -67,6 +68,7 @@ The application provides the following option in command line interface:
     and generate bill. The total amount will be displayed at the last line of the bill.
 
 2. **List all products**
+   
    This option will list all the products stored in the system.
     
     Example:
@@ -89,6 +91,7 @@ The application provides the following option in command line interface:
     ```
  
 3. **Add product**
+   
    This option will allow user to add new product in the system. User will be prompted to enter product name and price.
 
     Example:
