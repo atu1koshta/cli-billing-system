@@ -36,6 +36,13 @@ The application should now be running inside the Docker container, in interactiv
 Upon successful running application, 4 products('A', 'B', 'C' and 'D') are already seeded. 
 Select '2' to view list of stored items.
 
+```sh
+1. Buy & Checkout
+2. List all products
+3. Add product
+q. Quit
+```
+
 ## Usage
 The application provides the following option in command line interface:
 1. **Buy & Checkout**
