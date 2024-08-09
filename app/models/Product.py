@@ -1,22 +1,25 @@
-from sqlalchemy.orm import Mapped
+from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.orm import mapped_column
 from sqlalchemy import String
 from sqlalchemy import Integer
 from sqlalchemy.orm import validates
-from app.config.DbConnection import Base, engine, Session
+from app.config.DbConnection import Base, Session
 from sqlalchemy.exc import SQLAlchemyError
 import logging
+
+log = logging.getLogger(__name__)
 
 
 class Product(Base):
     __tablename__ = "products"
-    log = logging.getLogger(__name__)
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30), unique=True)
     unit_price: Mapped[int] = mapped_column(Integer)
     discount_price: Mapped[int] = mapped_column(Integer, nullable=True)
     discount_units: Mapped[int] = mapped_column(Integer, nullable=True)
+
+    bills = relationship('BillProduct', back_populates='product')
 
     @validates('name')
     def validate_name(self, _, value):
@@ -54,11 +57,10 @@ class Product(Base):
         super().__init__(**kwargs)
         self.validate_discount()
 
-    # Class Methods
-    @classmethod
-    def add_product(cls, name: str, unit_price: int, discount_price: int = None, discount_units: int = None):
-        product = cls(name=name, unit_price=unit_price, discount_price=discount_price,
-                      discount_units=discount_units)
+    @staticmethod
+    def add_product(name: str, unit_price: int, discount_price: int = None, discount_units: int = None):
+        product = Product(name=name, unit_price=unit_price, discount_price=discount_price,
+                          discount_units=discount_units)
 
         try:
             with Session() as session:
@@ -66,27 +68,24 @@ class Product(Base):
                 session.commit()
                 session.refresh(product)
 
-                cls.log.info(f"Product {name} added successfully")
+                log.info(f"Product {name} added successfully")
 
                 return product
         except SQLAlchemyError as e:
-            cls.log.error(e)
+            log.error(e)
 
-    @classmethod
-    def get_all_products(cls):
+    @staticmethod
+    def get_all_products():
         try:
             with Session() as session:
-                return session.query(cls).all()
+                return session.query(Product).all()
         except SQLAlchemyError as e:
-            cls.log.error(e)
+            log.error(e)
 
-    @classmethod
-    def get_products_by_names(cls, names: list):
+    @staticmethod
+    def get_products_by_names(names: list):
         try:
             with Session() as session:
-                return session.query(cls).filter(cls.name.in_(names)).all()
+                return session.query(Product).filter(Product.name.in_(names)).all()
         except SQLAlchemyError as e:
-            cls.log.error(e)
-
-
-Base.metadata.create_all(engine)
+            Product.log.error(e)

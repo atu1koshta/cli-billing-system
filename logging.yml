@@ -6,7 +6,7 @@ loggers:
         level: WARNING
         handlers: [file]
         propagate: False
-    app.models.Product:
+    app:
         level: INFO
         handlers: [file]
         propagate: False

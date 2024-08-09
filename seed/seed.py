@@ -2,7 +2,7 @@ from app.models.Product import Product
 from sqlalchemy.exc import SQLAlchemyError
 import logging
 
-log = logging.getLogger(__name__)
+log = logging.getLogger()
 
 
 def seed_products():
@@ -33,7 +33,7 @@ def seed_products():
         try:
             Product.add_product(**product)
         except SQLAlchemyError as e:
-            log.error("SQLAlchemyError occured while seeding products")
+            log.error("SQLAlchemyError occurred while seeding products")
             log.error(e)
         except Exception as e:
             log.error(e)
