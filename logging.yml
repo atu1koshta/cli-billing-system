@@ -1,0 +1,35 @@
+version: 1
+disable_existing_loggers: False
+
+loggers:
+    sqlalchemy.engine.Engine:
+        level: WARNING
+        handlers: [file]
+        propagate: False
+    app.models.Product:
+        level: INFO
+        handlers: [file]
+        propagate: False
+
+handlers:
+    console:
+        class: logging.StreamHandler
+        level: DEBUG
+        formatter: simple
+        stream: ext://sys.stdout
+
+    file:
+        class: logging.handlers.RotatingFileHandler
+        level: DEBUG
+        formatter: simple
+        filename: app.log
+        maxBytes: 2000000
+        backupCount: 2
+
+formatters:
+    simple:
+        format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+root:
+    level: INFO
+    handlers: [console]
